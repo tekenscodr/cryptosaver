@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import React from 'react'
 
-const page = () => {
+const Page = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     return (
@@ -21,4 +21,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
