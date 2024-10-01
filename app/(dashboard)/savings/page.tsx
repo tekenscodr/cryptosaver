@@ -65,7 +65,7 @@ const Savings = () => {
                 </CardHeader>
                 <CardContent>
 
-                    <SavingsPlans data={goal} />
+                    <SavingsPlans data={goals} />
                 </CardContent>
             </Card>
         </div>
