@@ -22,7 +22,6 @@ async function getData(): Promise<Payment[]> {
 }
 
 export default function DemoPage() {
-    const data: [] = getData()
 
     const handleFormSubmit = async () => {
     };
@@ -50,7 +49,7 @@ export default function DemoPage() {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <DataTable columns={columns} data={data} />
+                    {/* <DataTable columns={columns} data={data} /> */}
                 </CardContent>
             </Card>
         </div>
