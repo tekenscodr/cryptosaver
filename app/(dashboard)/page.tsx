@@ -15,25 +15,26 @@ const Page = () => {
     const [plans, setPlans] = useState([])
     const [balance, setBalance] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [totalContributed, setTotalContributed] = useState(0);
 
     const fetchGoals = async () => {
         try {
             const response = await axios.get('/api/plan/get-plan');
-            const formattedGoals = response.data.data.map((goal: { balance: number; budget: number; plan_name: string; }) => ({
+            const formattedGoals = response.data.data.map((goal: { balance: any; budget: any; plan_name: any; }) => ({
                 amountContributed: goal.balance,
                 totalGoal: goal.budget,
                 label: goal.plan_name,
             }));
 
-            setGoals(response.data.data.amountContributed);
-            setPlans(formattedGoals)
+            const totalAmountContributed = formattedGoals.reduce((acc: any, goal: { amountContributed: any; }) => acc + goal.amountContributed, 0);
+            setGoals(totalAmountContributed);
+            setPlans(formattedGoals);
         } catch (error) {
             console.error(error);
         } finally {
             setLoading(false);
         }
     };
-
     const fetchBalance = async () => {
         try {
             console.log('get')
@@ -70,7 +71,7 @@ const Page = () => {
                             <p className='mt-1 font-medium text-sm'>Wallet</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className='text-center bg-red-300 text-white p-1 rounded-md'>{goals.reduce((acc, goal) => acc + goal, 0)}</p>
+                            <p className='text-center bg-red-300 text-white p-1 rounded-md'>{totalContributed}</p>
                             <p className='mt-1 font-medium text-sm'>Goals</p>
                         </div>
                     </div>
