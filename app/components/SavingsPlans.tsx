@@ -1,5 +1,6 @@
 import React from 'react';
 import { MoreVertical } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 interface ContributionProgressProps {
     data: {
@@ -35,7 +36,22 @@ const SavingsPlans: React.FC<ContributionProgressProps> = ({ data }) => {
                 </div>
             </div>
             <div className="ml-4 text-gray-600">
-                <MoreVertical size={20} />
+
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <MoreVertical size={20} />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                        <DropdownMenuLabel>Make Contribution</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem>
+                                Contribute
+                            </DropdownMenuItem>
+                        </DropdownMenuGroup>
+
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
         </div>
     );

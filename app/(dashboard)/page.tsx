@@ -62,7 +62,7 @@ const Page = () => {
                         <CardTitle> Welcome <span className='text-blue-500'>{username?.given_name}</span></CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <h2 className='text-2xl font-medium'>Balance: {balance}</h2>
+                        <h2 className='text-2xl font-medium'>Balance:GHC {balance}</h2>
                     </CardContent>
 
                     {/* Total Savings & Liquidity side-by-side */}
