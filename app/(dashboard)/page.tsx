@@ -36,6 +36,7 @@ const Page = () => {
             console.log('get')
             const response = await axios.get('/api/balance');
             console.log('WHenev', response.data.data.account_balance);
+            setBalance(response.data.data.account_balance)
             return response.data.data.account_balance
         } catch (error) {
             console.error(error);
