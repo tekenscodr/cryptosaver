@@ -1,21 +1,21 @@
 'use client'
 import { Card, CardContent } from '@/components/ui/card'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import React from 'react'
 
 const Page = () => {
-    const pathname = usePathname();
-    const hasReference = pathname.includes('reference=');
+    const searchParams = useSearchParams();
+    const reference = searchParams.get('reference');
 
     return (
         <div className='flex justify-center items-center'>
             <Card className='flex justify-center items-center'>
                 <CardContent>
-                    {hasReference && (
-                        <p>Payment Verified with reference: {pathname.split('reference=')[1]}</p>
+                    {reference && (
+                        <p>Payment Verified with reference: {reference}</p>
                     )}
-                    {!hasReference && (
+                    {!reference && (
                         <p>Payment Verified</p>
                     )}
                     <Link href={'/deposts'}>
