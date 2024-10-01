@@ -65,7 +65,7 @@ const Savings = () => {
                 </CardHeader>
                 <CardContent>
                     {goals.map((goal) => (
-                        <div key={goal.label}>
+                        <div key={goal}>
                             <SavingsPlans data={goal} />
                         </div>
                     ))}
