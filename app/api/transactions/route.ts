@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import prisma from '../../prismadb'
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export async function GET() {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
     try {
         const transactions = await prisma.transaction.findMany({
             where: {
-                userId: 'your_user_id', // Replace with actual user ID
+                userId: user.id, // Replace with actual user ID
             },
             select: {
                 id: true,

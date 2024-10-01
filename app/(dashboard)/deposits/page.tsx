@@ -29,6 +29,7 @@ export default function DemoPage() {
     useEffect(() => {
         const fetchData = async () => {
             const payments = await getData();
+            console.log('payment', payments)
             setData(payments);
             setLoading(false);
         };
