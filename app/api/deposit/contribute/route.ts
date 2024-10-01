@@ -25,7 +25,6 @@ export async function PUT(request: Request) {
                 account_balance: true
             }
         })
-        const decimal = await (Number(getFiat?.account_balance) - Number(body.amount)).toFixed(2)
         const deduction = await prisma.fiatAc.update({
             where: {
                 userId: user?.id
@@ -36,7 +35,7 @@ export async function PUT(request: Request) {
             }
         })
         return NextResponse.json({ deduction })
-    } catch (error) {
-        return NextResponse.json(error)
+    } catch (error: any) {
+        return NextResponse.json(error.message)
     }
 }
