@@ -91,14 +91,20 @@ export async function POST(req: NextRequest) {
                     }
                 }
             }),
-            prisma.fiatAc.update({
+            prisma.fiatAc.upsert({
                 where: {
                     userId: userID.id
                 },
-                data: {
+                create: {
+                    userId: userID.id,
+                    account_balance: data.amount
+
+                },
+                update: {
                     userId: userID.id,
                     account_balance: {
                         increment: data.amount
+
                     }
                 }
             })
