@@ -45,13 +45,13 @@ export default function DepositForm({ onFormSubmit }: PlanFormProps) {
 
             });
             onFormSubmit();
-        } catch (error) {
+        } catch (error: any) {
             toast({
                 title: "Plan not submitted:",
                 description: (
                     <pre className="mt-2 w-[340px] rounded-md bg-red-800 p-4 text-white">
                         <p>Failed</p>
-                        <p> {error.message}</p>
+                        <p> {error}</p>
 
                     </pre>
                 ),
