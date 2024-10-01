@@ -1,6 +1,9 @@
 import React from 'react';
 import { MoreVertical } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Dialog } from '@radix-ui/react-dialog';
+import { DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { ContributeForm } from './ContributeForm';
 
 interface ContributionProgressProps {
     data: {
@@ -37,21 +40,14 @@ const SavingsPlans: React.FC<ContributionProgressProps> = ({ data }) => {
             </div>
             <div className="ml-4 text-gray-600">
 
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
+                <Dialog>
+                    <DialogTrigger asChild>
                         <MoreVertical size={20} />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56">
-                        <DropdownMenuLabel>Make Contribution</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                Contribute
-                            </DropdownMenuItem>
-                        </DropdownMenuGroup>
-
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <ContributeForm onFormSubmit={() => { }} />
+                    </DialogContent>
+                </Dialog>
             </div>
         </div>
     );
