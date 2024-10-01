@@ -27,6 +27,7 @@ const Page = () => {
             }));
 
             const totalAmountContributed = formattedGoals.reduce((acc: any, goal: { amountContributed: any; }) => acc + goal.amountContributed, 0);
+            console.log(totalAmountContributed)
             setGoals(totalAmountContributed);
             setPlans(formattedGoals);
         } catch (error) {
