@@ -32,23 +32,24 @@ export async function POST(req: NextRequest) {
         switch (event?.type) {
             case "user.created":
                 // Create User
-                const checking = await event.data.user
+                // const checking = await event.data.user
                 const newUser = await event.data.user
-                await prisma.user.create({
-                    data: {
-                        kinde_id: newUser.id,
-                        email: newUser.email,
-                        firstname: newUser.first_name,
-                        lastname: newUser.last_name
-                    }
-                })
-                await prisma.fiatAc.create({
-                    data: {
-                        userId: newUser.id,
-                        account_balance: 0,
+                await prisma.$transaction([
+                    prisma.user.create({
+                        data: {
+                            kinde_id: newUser.id,
+                            email: newUser.email,
+                            firstname: newUser.first_name,
+                            lastname: newUser.last_name
+                        }
+                    }),
+                    prisma.fiatAc.create({
+                        data: {
+                            userId: newUser.id,
+                            account_balance: 0,
 
-                    }
-                })
+                        }
+                    }),])
                 break;
             default:
                 console.log("event not handled", event.type);
