@@ -12,6 +12,7 @@ const Page = () => {
     const { getUser } = useKindeBrowserClient();
     const username = getUser();
     const [goals, setGoals] = useState([]);
+    const [plans, setPlans] = useState([])
     const [balance, setBalance] = useState(0);
     const [loading, setLoading] = useState(true);
 
@@ -23,7 +24,9 @@ const Page = () => {
                 totalGoal: goal.budget,
                 label: goal.plan_name,
             }));
-            setGoals(formattedGoals);
+
+            setGoals(response.data.data.amountContributed);
+            setPlans(formattedGoals)
         } catch (error) {
             console.error(error);
         } finally {
@@ -103,9 +106,9 @@ const Page = () => {
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                {goals.map((goal) => (
-                                    <div key={goal}>
-                                        <SavingsPlans data={goal} />
+                                {plans.map((plan) => (
+                                    <div key={plan}>
+                                        <SavingsPlans data={plan} />
                                     </div>
                                 ))}
                             </CardContent>
