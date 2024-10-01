@@ -6,7 +6,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 export async function GET() {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
-    if (!user) throw new Error('Please login')
+    if (!user) return NextResponse.json({ message: "user cannot be found" })
     try {
         const userID = await prisma.user.findFirst({
             where: {
