@@ -11,7 +11,7 @@ interface ContributionProgressProps {
 
 const SavingsPlans: React.FC<ContributionProgressProps> = ({ data }) => {
     const { amountContributed, totalGoal, label } = data;
-    const percentage = (amountContributed / totalGoal) * 100;
+    const percentage = (Number(amountContributed) / Number(totalGoal)) * 100;
 
     return (
         <div className="mb-4 flex items-center">
@@ -27,7 +27,7 @@ const SavingsPlans: React.FC<ContributionProgressProps> = ({ data }) => {
                 </div>
                 <div className="flex justify-between text-gray-600 text-sm mt-2">
                     <span>
-                        GHC{amountContributed} / GHC{totalGoal}
+                        GHC{Number(amountContributed)} / {Number(totalGoal)}
                     </span>
                     <span>
                         {percentage.toFixed(2)}%
