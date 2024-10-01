@@ -1,0 +1,150 @@
+// Prisma schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("LOCAL_DATABASE_URL")
+}
+
+// User entity
+model User {
+  id        String    @id @default(uuid())
+  kinde_id  String
+  firstname String
+  lastname  String
+  email     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+
+  // Relationships
+  kyc           Kyc?
+  fiatAccount   FiatAc?
+  cryptoAccount CryptoAc?
+  transactions  Transaction[]
+  plans         Plan[]
+  auditLogs     AuditLog[]
+}
+
+// KYC entity
+model Kyc {
+  id         String    @id @default(uuid())
+  userId     String    @unique
+  idCard     String
+  expiryDate DateTime
+  photo      String
+  location   String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime?
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id])
+}
+
+// Fiat Account entity
+model FiatAc {
+  id              String    @id @default(uuid())
+  userId          String    @unique
+  account_number  String
+  account_balance Decimal
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime?
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id])
+}
+
+// Crypto Account entity
+model CryptoAc {
+  id              String    @id @default(uuid())
+  userId          String    @unique
+  account_number  String
+  account_balance Decimal
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime?
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id])
+}
+
+// Plan entity
+model Plan {
+  id            String    @id @default(uuid())
+  userId        String
+  plan_name     String
+  description   String
+  budget        Decimal
+  balance       Decimal   @default(0)
+  duration      String
+  starting_date DateTime
+  isComplete    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime?
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id])
+}
+
+// Transaction entity
+model Transaction {
+  id          String    @id @default(uuid())
+  userId      String
+  type        String
+  status      String
+  destination String
+  amount      Decimal
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime?
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id])
+}
+
+// Audit Log entity
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  action    String
+  ipAddress String
+  userAgent String
+  timestamp DateTime @default(now())
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id])
+}
+
+// Enum for transaction types
+enum TransactionType {
+  Credit
+  Debit
+}
+
+enum TransactionStatus {
+  Completed
+  Pending
+  Failed
+}
+
+model MonthHistory {
+  userId String
+  day    Int
+  month  Int
+  year   Int
+  debit  Float
+  credit Float
+
+  @@id([day, month, year, userId])
+}
+
+model YearHistory {
+  userId String
+  month  Int
+  year   Int
+  debit  Float
+  credit Float
+
+  @@id([month, year, userId])
+}
