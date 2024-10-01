@@ -6,9 +6,6 @@ import { useSearchParams } from 'next/navigation'
 
 
 const Page = ({ searchParams }: any) => {
-
-
-
     return (
         <div className='flex justify-center items-center'>
             <Card className='flex justify-center items-center'>
