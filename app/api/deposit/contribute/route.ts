@@ -16,6 +16,7 @@ export async function PUT(request: Request) {
                 id: true
             }
         })
+        if (!user) throw new Error('error')
         const getFiat = await prisma.fiatAc.findFirst({
             where: {
                 userId: user?.id
@@ -25,15 +26,27 @@ export async function PUT(request: Request) {
                 account_balance: true
             }
         })
-        const deduction = await prisma.fiatAc.update({
-            where: {
-                userId: user?.id
-            },
-            data: {
-                account_balance: parseFloat((Number(getFiat?.account_balance) - Number(body.amount)).toFixed(2))
+        const deduction = await prisma.$transaction([
+            prisma.fiatAc.update({
+                where: {
+                    userId: user?.id
+                },
+                data: {
+                    account_balance: parseFloat((Number(getFiat?.account_balance) - Number(body.amount)).toFixed(2))
 
-            }
-        })
+                }
+            }),
+            prisma.transaction.update({
+                where: {
+
+                    userId: user.id,
+                },
+                data: {
+                    amount: body.amount,
+
+                }
+            })
+        ])
         return NextResponse.json({ deduction })
     } catch (error: any) {
         return NextResponse.json(error.message)
