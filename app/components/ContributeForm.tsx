@@ -29,12 +29,10 @@ export function ContributeForm({ onFormSubmit }: PlanFormProps) {
         },
     });
 
-
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
         try {
-
-            const plan = await axios.post('/api/deposit/contribute', data)
-            console.log(plan.data)
+            const plan = await axios.post('/api/deposit/contribute', data);
+            console.log(plan.data);
             toast({
                 title: "You submitted the following values:",
                 description: (
@@ -44,17 +42,41 @@ export function ContributeForm({ onFormSubmit }: PlanFormProps) {
                 ),
             });
             onFormSubmit();
-
         } catch (error: any) {
-            toast({
-                title: "Plan not submitted:",
-                description: (
-                    <pre className="mt-2 w-[340px] rounded-md bg-red-800 p-4 text-white">
-                        <p>FAILED</p>
-                        <p> {error}</p>
-                    </pre>
-                ),
-            });
+            if (error.response) {
+                // Handle API response errors
+                toast({
+                    title: "Plan not submitted:",
+                    description: (
+                        <pre className="mt-2 w-[340px] rounded-md bg-red-800 p-4 text-white">
+                            <p>FAILED</p>
+                            <p> {error.response.data}</p>
+                        </pre>
+                    ),
+                });
+            } else if (error.request) {
+                // Handle network errors
+                toast({
+                    title: "Network error:",
+                    description: (
+                        <pre className="mt-2 w-[340px] rounded-md bg-red-800 p-4 text-white">
+                            <p>NETWORK ERROR</p>
+                            <p> {error.message}</p>
+                        </pre>
+                    ),
+                });
+            } else {
+                // Handle other errors
+                toast({
+                    title: "Unknown error:",
+                    description: (
+                        <pre className="mt-2 w-[340px] rounded-md bg-red-800 p-4 text-white">
+                            <p>UNKNOWN ERROR</p>
+                            <p> {error.message}</p>
+                        </pre>
+                    ),
+                });
+            }
         }
     };
 
