@@ -96,6 +96,7 @@ export async function POST(req: NextRequest) {
                     userId: userID.id
                 },
                 data: {
+                    userId: userID.id,
                     account_balance: {
                         increment: data.amount
                     }
