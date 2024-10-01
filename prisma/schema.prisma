@@ -6,7 +6,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("LOCAL_DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 // User entity
@@ -47,7 +47,6 @@ model Kyc {
 model FiatAc {
   id              String    @id @default(uuid())
   userId          String    @unique
-  account_number  String
   account_balance Decimal
   createdAt       DateTime  @default(now())
   updatedAt       DateTime?

@@ -42,12 +42,20 @@ export async function POST(req: NextRequest) {
                         lastname: newUser.last_name
                     }
                 })
+                await prisma.fiatAc.create({
+                    data: {
+                        userId: newUser.id,
+                        account_balance: 0,
+
+                    }
+                })
                 break;
             default:
                 console.log("event not handled", event.type);
                 break;
 
         }
+
         return NextResponse.json({ message: "success" }, { status: 200 })
     } catch (error) {
         if (error instanceof Error) {

@@ -5,26 +5,39 @@ import { DataTable } from "./data-table"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import DepositForm from "@/app/components/DepositForm"
+import prisma from '../../prismadb'; // Import your Prisma client
+import { useEffect, useState } from "react"
+import axios from "axios"
 
 async function getData(): Promise<Payment[]> {
-    // Fetch data from your API here.
-    return [
-        {
-            id: "728ed52f",
-            amount: 100,
-            status: "pending",
-            email: "m@example.com",
-        },
-        // ...
-    ]
+    const transaction = await axios.get('/api/transactions')
+    if (!transaction.data === null) console.log('make deposit');
+    console.log(transaction.data)
 
-
+    return Array.from(transaction.data).map((transaction: any) => ({
+        id: transaction.id.slice(0, 6),
+        amount: Number(transaction.amount),
+        status: transaction.status,
+        email: transaction.userId,
+    }));
 }
-
 export default function DemoPage() {
+
+    const [data, setData] = useState<Payment[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const payments = await getData();
+            setData(payments);
+            setLoading(false);
+        };
+        fetchData();
+    }, []);
 
     const handleFormSubmit = async () => {
     };
+
     return (
         <div className="container mx-auto py-10">
             <Card>
@@ -49,7 +62,11 @@ export default function DemoPage() {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {/* <DataTable columns={columns} data={data} /> */}
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : (
+                        <DataTable columns={columns} data={data} />
+                    )}
                 </CardContent>
             </Card>
         </div>

@@ -37,7 +37,10 @@ export default function DepositForm({ onFormSubmit }: PlanFormProps) {
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
         try {
             const deposit = await axios.post('/api/paystack/', data)
+            const new_data = { ...data, type: "credit", status: 'Completed', destination: "Fiat", description: data.description }
+            const transaction = await axios.post('/api/deposit/', new_data)
             console.log(deposit.data.responseData.data.authorization_url)
+            console.log(transaction)
 
             router.push(`${deposit.data.responseData.data.authorization_url}`)
             toast({
@@ -51,8 +54,7 @@ export default function DepositForm({ onFormSubmit }: PlanFormProps) {
                 description: (
                     <pre className="mt-2 w-[340px] rounded-md bg-red-800 p-4 text-white">
                         <p>Failed</p>
-                        <p> {error}</p>
-
+                        <p> {error.message}</p>
                     </pre>
                 ),
             });

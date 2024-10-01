@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
             }),
             prisma.fiatAc.update({
                 where: {
-                    userId: data.id
+                    userId: userID.id
                 },
                 data: {
                     account_balance: {
