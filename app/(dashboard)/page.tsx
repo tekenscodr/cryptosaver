@@ -35,7 +35,7 @@ const Page = () => {
         try {
             console.log('get')
             const response = await axios.get('/api/balance');
-            console.log('WHenev', response.data.balance);
+            console.log('WHenev', response.data);
         } catch (error) {
             console.error(error);
         }

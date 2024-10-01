@@ -64,8 +64,11 @@ const Savings = () => {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-
-                    <SavingsPlans data={goals} />
+                    {goals.map((goal) => (
+                        <div key={goal}>
+                            <SavingsPlans data={goal} />
+                        </div>
+                    ))}
                 </CardContent>
             </Card>
         </div>
