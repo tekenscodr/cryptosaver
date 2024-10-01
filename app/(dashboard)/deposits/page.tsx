@@ -12,7 +12,7 @@ import axios from "axios"
 async function getData(): Promise<Payment[]> {
     const transaction = await axios.get('/api/transactions')
     if (!transaction.data === null) console.log('make deposit');
-    console.log(transaction.data)
+    console.log(transaction)
 
     return Array.from(transaction.data).map((transaction: any) => ({
         id: transaction.id.slice(0, 6),

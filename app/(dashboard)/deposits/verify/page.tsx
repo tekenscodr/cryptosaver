@@ -16,7 +16,7 @@ const Page = ({ searchParams }: any) => {
 
                     <p>Payment Verification succes {searchParams.reference}</p>
 
-                    <Link href={'/deposts'}>
+                    <Link href={'/deposits'}>
                         Back to transactions
                     </Link>
                 </CardContent>
