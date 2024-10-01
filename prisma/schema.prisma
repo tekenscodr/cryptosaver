@@ -1,5 +1,3 @@
-// Prisma schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,26 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// User entity
 model User {
-  id        String    @id @default(uuid())
-  kinde_id  String
-  firstname String
-  lastname  String
-  email     String    @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
-
-  // Relationships
-  kyc           Kyc?
-  fiatAccount   FiatAc?
-  cryptoAccount CryptoAc?
-  transactions  Transaction[]
-  plans         Plan[]
+  id            String        @id @default(uuid())
+  kinde_id      String
+  firstname     String
+  lastname      String
+  email         String        @unique
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime?
   auditLogs     AuditLog[]
+  cryptoAccount CryptoAc?
+  fiatAccount   FiatAc?
+  kyc           Kyc?
+  plans         Plan[]
+  transactions  Transaction[]
 }
 
-// KYC entity
 model Kyc {
   id         String    @id @default(uuid())
   userId     String    @unique
@@ -38,37 +32,27 @@ model Kyc {
   location   String
   createdAt  DateTime  @default(now())
   updatedAt  DateTime?
-
-  // Relationships
-  user User @relation(fields: [userId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
 }
 
-// Fiat Account entity
 model FiatAc {
   id              String    @id @default(uuid())
   userId          String    @unique
   account_balance Decimal
   createdAt       DateTime  @default(now())
   updatedAt       DateTime?
-
-  // Relationships
-  user User @relation(fields: [userId], references: [id])
+  user            User      @relation(fields: [userId], references: [id])
 }
 
-// Crypto Account entity
 model CryptoAc {
   id              String    @id @default(uuid())
   userId          String    @unique
-  account_number  String
   account_balance Decimal
   createdAt       DateTime  @default(now())
   updatedAt       DateTime?
-
-  // Relationships
-  user User @relation(fields: [userId], references: [id])
+  user            User      @relation(fields: [userId], references: [id])
 }
 
-// Plan entity
 model Plan {
   id            String    @id @default(uuid())
   userId        String
@@ -81,12 +65,9 @@ model Plan {
   isComplete    Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime?
-
-  // Relationships
-  user User @relation(fields: [userId], references: [id])
+  user          User      @relation(fields: [userId], references: [id])
 }
 
-// Transaction entity
 model Transaction {
   id          String    @id @default(uuid())
   userId      String
@@ -97,12 +78,9 @@ model Transaction {
   description String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime?
-
-  // Relationships
-  user User @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
 }
 
-// Audit Log entity
 model AuditLog {
   id        String   @id @default(uuid())
   userId    String
@@ -110,21 +88,7 @@ model AuditLog {
   ipAddress String
   userAgent String
   timestamp DateTime @default(now())
-
-  // Relationships
-  user User @relation(fields: [userId], references: [id])
-}
-
-// Enum for transaction types
-enum TransactionType {
-  Credit
-  Debit
-}
-
-enum TransactionStatus {
-  Completed
-  Pending
-  Failed
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model MonthHistory {
@@ -146,4 +110,15 @@ model YearHistory {
   credit Float
 
   @@id([month, year, userId])
+}
+
+enum TransactionType {
+  Credit
+  Debit
+}
+
+enum TransactionStatus {
+  Completed
+  Pending
+  Failed
 }
