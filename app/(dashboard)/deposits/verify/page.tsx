@@ -6,26 +6,23 @@ import React from 'react'
 import { useSearchParams } from 'next/navigation'
 
 
-const Page = () => {
+const Page = ({ searchParams }: any) => {
     // const pathname = usePathname();
     // console.log(pathname)
-    const searchParams = useSearchParams()
+    // const searchParams = useSearchParams()
 
     // const referenceIndex = pathname.indexOf('reference=');
     // const reference = pathname.split('reference=')[1];
     // console.log(reference)
-    const search = searchParams.get('reference')
+    // const search = searchParams.get('reference')
 
     return (
         <div className='flex justify-center items-center'>
             <Card className='flex justify-center items-center'>
                 <CardContent>
-                    {search && (
-                        <p>Payment Verified with reference: {search}</p>
-                    )}
-                    {!search && (
-                        <p>Payment Verification failed</p>
-                    )}
+
+                    <p>Payment Verification succes {searchParams.reference}</p>
+
                     <Link href={'/deposts'}>
                         Back to transactions
                     </Link>
