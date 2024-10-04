@@ -2,7 +2,7 @@ import React from 'react';
 import { MoreVertical } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Dialog } from '@radix-ui/react-dialog';
-import { DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ContributeForm } from './ContributeForm';
 
 interface ContributionProgressProps {
@@ -10,13 +10,14 @@ interface ContributionProgressProps {
         amountContributed: number;
         totalGoal: number;
         label: string;
+        id: string;
     };
 }
 
 const SavingsPlans: React.FC<ContributionProgressProps> = ({ data }) => {
-    const { amountContributed, totalGoal, label } = data;
+    const { amountContributed, totalGoal, label, id } = data;
     const percentage = (Number(amountContributed) / Number(totalGoal)) * 100;
-
+    // const Plan
     return (
         <div className="mb-4 flex items-center">
             <div className="flex-1">
@@ -44,8 +45,12 @@ const SavingsPlans: React.FC<ContributionProgressProps> = ({ data }) => {
                     <DialogTrigger asChild>
                         <MoreVertical size={20} />
                     </DialogTrigger>
+
                     <DialogContent>
-                        <ContributeForm onFormSubmit={() => { }} />
+                        <DialogTitle>Make A Contribution To Your Goal</DialogTitle>
+                        <ContributeForm
+                            onFormSubmit={() => ('')}
+                            plan_id={id} />
                     </DialogContent>
                 </Dialog>
             </div>

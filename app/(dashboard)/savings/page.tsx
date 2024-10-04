@@ -14,12 +14,14 @@ const Savings = () => {
     const fetchGoals = async () => {
         try {
             const response = await axios.get('/api/plan/get-plan');
-            const formattedGoals = response.data.data.map((goal: { balance: number; budget: number; plan_name: string; }) => ({
+            const formattedGoals = response.data.data.map((goal: { balance: number; budget: number; plan_name: string; id: string; }) => ({
                 amountContributed: goal.balance,
                 totalGoal: goal.budget,
                 label: goal.plan_name,
+                id: goal.id
             }));
             setGoals(formattedGoals);
+            console.log(goals)
         } catch (error) {
             console.error(error);
         } finally {

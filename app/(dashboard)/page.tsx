@@ -7,10 +7,13 @@ import SavingsPlans from '../components/SavingsPlans';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import axios from 'axios';
+import prisma from '../prismadb';
+
 
 const Page = () => {
     const { getUser } = useKindeBrowserClient();
     const username = getUser();
+    console.log(username?.id)
     const [goals, setGoals] = useState([]);
     const [plans, setPlans] = useState([])
     const [balance, setBalance] = useState(0);
@@ -20,10 +23,11 @@ const Page = () => {
     const fetchGoals = async () => {
         try {
             const response = await axios.get('/api/plan/get-plan');
-            const formattedGoals = response.data.data.map((goal: { balance: any; budget: any; plan_name: any; }) => ({
+            const formattedGoals = response.data.data.map((goal: { balance: any; budget: any; plan_name: any; id: string; }) => ({
                 amountContributed: goal.balance,
                 totalGoal: goal.budget,
                 label: goal.plan_name,
+                id: goal.id,
             }));
 
             const totalAmountContributed = formattedGoals.reduce((acc: any, goal: { amountContributed: any; }) => acc + goal.amountContributed, 0);
@@ -68,12 +72,12 @@ const Page = () => {
                     {/* Total Savings & Liquidity side-by-side */}
                     <div className="flex lg:flex-row sm:flex-col p-2 gap-4">
                         <div className="flex flex-col">
-                            <p className='text-center bg-green-300 text-white p-1 rounded-md'>{balance}</p>
-                            <p className='mt-1 font-medium text-sm'>Wallet</p>
+                            <p className='text-center bg-green-600 text-white p-1 rounded-md'>GHC {balance}</p>
+                            <p className='mt-1 font-medium text-sm text-center'>Wallet</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className='text-center bg-red-300 text-white p-1 rounded-md'>{totalContributed}</p>
-                            <p className='mt-1 font-medium text-sm'>Goals</p>
+                            <p className='text-center bg-red-600 text-white p-1 rounded-md'>GHC {goals}</p>
+                            <p className='mt-1 font-medium text-sm text-center'>Goals</p>
                         </div>
                     </div>
 

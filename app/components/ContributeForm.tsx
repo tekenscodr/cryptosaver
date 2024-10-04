@@ -12,16 +12,19 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import Select from 'react-select';
 import axios from "axios";
+import { DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 interface PlanFormProps {
     onFormSubmit: () => void;
+    plan_id: string;
 }
 
 const FormSchema = z.object({
     amount: z.number().min(1, "Budget is required"),
+    plan: z.string()
 });
 
-export function ContributeForm({ onFormSubmit }: PlanFormProps) {
+export function ContributeForm({ onFormSubmit, plan_id }: PlanFormProps) {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -33,12 +36,19 @@ export function ContributeForm({ onFormSubmit }: PlanFormProps) {
         try {
             const plan = await axios.post('/api/deposit/contribute', data);
             console.log(plan.data);
+            if(!plan){
+                toast({
+                    title: "Failed",
+                    description: (
+                        <p>Awwnnn failed</p>
+                    ),
+                })
+            } 
+            console.log(plan_id)
             toast({
-                title: "You submitted the following values:",
+                title: "SUCCESS",
                 description: (
-                    <pre className="mt-2 w-[340px] rounded-md p-4 text-white">
-                        <p>SUCCESS</p>
-                    </pre>
+                    <p>Hurray</p>
                 ),
             });
             onFormSubmit();
@@ -46,11 +56,11 @@ export function ContributeForm({ onFormSubmit }: PlanFormProps) {
             if (error.response) {
                 // Handle API response errors
                 toast({
-                    title: "Plan not submitted:",
+                    title: "FAILED",
                     description: (
                         <pre className="mt-2 w-[340px] rounded-md bg-red-800 p-4 text-white">
                             <p>FAILED</p>
-                            <p> {error.response.data}</p>
+                            <p> {error.response.data.message || error.response.data.error}</p>
                         </pre>
                     ),
                 });
@@ -81,29 +91,50 @@ export function ContributeForm({ onFormSubmit }: PlanFormProps) {
     };
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <DialogContent>
+            <DialogTitle>Make A Contribution To Your Goal</DialogTitle>
 
-                <FormField
-                    control={form.control}
-                    name="amount"
-                    render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                            <FormLabel>Amount</FormLabel>
-                            <FormControl>
-                                <input
-                                    {...form.register("amount", { valueAsNumber: true })}
-                                    type="number"
-                                    className="w-full rounded-md border border-gray-700 bg-gray-50 p-2"
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit" className="bg-blue-600 hover:bg-indigo-600 text-white">Submit</Button>
-            </form>
-        </Form>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+
+                    <FormField
+                        control={form.control}
+                        name="amount"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <FormLabel>Amount</FormLabel>
+                                <FormControl>
+                                    <input
+                                        {...form.register("amount", { valueAsNumber: true })}
+                                        type="number"
+                                        className="w-full rounded-md border border-gray-700 bg-gray-50 p-2"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="plan"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <FormControl>
+                                    <input
+                                        {...form.register("plan")}
+                                        type="hidden"
+                                        value={plan_id}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <DialogClose asChild>
+                        <Button type="submit" className="bg-blue-600 hover:bg-indigo-600 text-white">Submit</Button>
+                    </DialogClose>
+                </form>
+            </Form>
+        </DialogContent>
 
     )
 }
