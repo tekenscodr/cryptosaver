@@ -14,7 +14,7 @@ const Page = () => {
     const { getUser } = useKindeBrowserClient();
     const username = getUser();
     console.log(username?.id)
-    const [goals, setGoals] = useState([]);
+    const [goals, setGoals] = useState(0);
     const [plans, setPlans] = useState([])
     const [balance, setBalance] = useState(0);
     const [loading, setLoading] = useState(true);

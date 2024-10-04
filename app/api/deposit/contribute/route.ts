@@ -71,7 +71,7 @@ export async function POST(request: Request, context: any) {
                     userId: user?.id
                 },
                 data: {
-                    account_balance: parseFloat((Number(getFiat.account_balance) - Number(body.amount)).toFixed(2))
+                    account_balance: 1000.00
 
                 }
             }),
